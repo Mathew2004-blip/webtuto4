@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profiles</title>
+</head>
+
+<body>
+    <h1>User Profiles</h1>
+    <div id="user-profiles"></div>
+
+    <script>
+        // Fetch JSON data
+        fetch('userProfiles.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Fetch error: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const profilesDiv = document.getElementById('user-profiles');
+                data.forEach(profile => {
+                    const profileDiv = document.createElement('div');
+                    profileDiv.innerHTML = `
+                        <strong>Name:</strong> ${profile.firstName} ${profile.lastName} <br>
+                        <strong>Email:</strong> ${profile.email} <br>
+                        <strong>Date of Birth:</strong> ${profile.dateOfBirth} <br>
+                        <strong>Address:</strong> <br>
+                        - Street: ${profile.address.street} <br>
+                        - City: ${profile.address.city} <br>
+                        - State: ${profile.address.state} <br>
+                        - Zip Code: ${profile.address.zipCode} <br>
+                        <strong>Preferences:</strong> <br>
+                        - Theme: ${profile.preferences.theme} <br>
+                        - Language: ${profile.preferences.language} <br>
+                        - Notifications: ${profile.preferences.notifications ? 'Enabled' : 'Disabled'} <br>
+                        - Subscribed to Newsletter: ${profile.preferences.subscription ? 'Yes' : 'No'} <br><br>
+                    `;
+                    profilesDiv.appendChild(profileDiv);
+                });
+            })
+            .catch(err => console.error('Fetch error: ' + err.message));
+    </script>
+</body>
+
+</html>
